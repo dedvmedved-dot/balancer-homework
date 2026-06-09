@@ -1,0 +1,18 @@
+ase@DESKTOP-9N5QTVO:~/balancer-project$ for i in 1 2 3; do
+  echo -n "hash /alpha запрос $i: "
+  curl -sI http://192.168.200.41/hash/alpha 2>/dev/null | grep X-Backend-Server
+  echo -n "hash /beta запрос $i: "
+  curl -sI http://192.168.200.41/hash/beta 2>/dev/null | grep X-Backend-Server
+  echo -n "hash /gamma запрос $i: "
+  curl -sI http://192.168.200.41/hash/gamma 2>/dev/null | grep X-Backend-Server
+done
+hash /alpha запрос 1: X-Backend-Server: frontend-2
+hash /beta запрос 1: X-Backend-Server: frontend-2
+hash /gamma запрос 1: X-Backend-Server: frontend-1
+hash /alpha запрос 2: X-Backend-Server: frontend-2
+hash /beta запрос 2: X-Backend-Server: frontend-2
+hash /gamma запрос 2: X-Backend-Server: frontend-1
+hash /alpha запрос 3: X-Backend-Server: frontend-2
+hash /beta запрос 3: X-Backend-Server: frontend-2
+hash /gamma запрос 3: X-Backend-Server: frontend-1
+ase@DESKTOP-9N5QTVO:~/balancer-project$

@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="456pt" height="472pt" viewBox="0.00 0.00 456.00 472.00">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 467.85)">
+<title>PhysicalArchitecture</title>
+<polygon fill="white" stroke="none" points="-4,4 -4,-467.85 452.11,-467.85 452.11,4 -4,4"/>
+<g id="clust1" class="cluster">
+<title>cluster_host</title>
+<path fill="none" stroke="#888888" stroke-dasharray="5,2" d="M135.2,-28C135.2,-28 307.2,-28 307.2,-28 313.2,-28 319.2,-34 319.2,-40 319.2,-40 319.2,-353 319.2,-353 319.2,-359 313.2,-365 307.2,-365 307.2,-365 135.2,-365 135.2,-365 129.2,-365 123.2,-359 123.2,-353 123.2,-353 123.2,-40 123.2,-40 123.2,-34 129.2,-28 135.2,-28"/>
+<text xml:space="preserve" text-anchor="middle" x="221.2" y="-351.1" font-family="Times,serif" font-size="11.00">KVM/libvirt (WSL2)</text>
+<text xml:space="preserve" text-anchor="middle" x="221.2" y="-337.9" font-family="Times,serif" font-size="11.00">Сеть: 192.168.200.0/24 (NAT)</text>
+</g>
+<!-- balancer -->
+<g id="node1" class="node">
+<title>balancer</title>
+<path fill="#ffe4b5" stroke="black" d="M299.2,-322.6C299.2,-322.6 143.2,-322.6 143.2,-322.6 137.2,-322.6 131.2,-316.6 131.2,-310.6 131.2,-310.6 131.2,-278.6 131.2,-278.6 131.2,-272.6 137.2,-266.6 143.2,-266.6 143.2,-266.6 299.2,-266.6 299.2,-266.6 305.2,-266.6 311.2,-272.6 311.2,-278.6 311.2,-278.6 311.2,-310.6 311.2,-310.6 311.2,-316.6 305.2,-322.6 299.2,-322.6"/>
+<text xml:space="preserve" text-anchor="middle" x="221.2" y="-309.6" font-family="Arial" font-size="10.00">balancer</text>
+<text xml:space="preserve" text-anchor="middle" x="221.2" y="-297.6" font-family="Arial" font-size="10.00">192.168.200.41</text>
+<text xml:space="preserve" text-anchor="middle" x="221.2" y="-285.6" font-family="Arial" font-size="10.00">Nginx</text>
+<text xml:space="preserve" text-anchor="middle" x="221.2" y="-273.6" font-family="Arial" font-size="10.00">Round-Robin + Hash</text>
+</g>
+<!-- frontend1 -->
+<g id="node2" class="node">
+<title>frontend1</title>
+<path fill="#b0e0e6" stroke="black" d="M146.4,-56C146.4,-56 12,-56 12,-56 6,-56 0,-50 0,-44 0,-44 0,-12 0,-12 0,-6 6,0 12,0 12,0 146.4,0 146.4,0 152.4,0 158.4,-6 158.4,-12 158.4,-12 158.4,-44 158.4,-44 158.4,-50 152.4,-56 146.4,-56"/>
+<text xml:space="preserve" text-anchor="middle" x="79.2" y="-43" font-family="Arial" font-size="10.00">frontend-1</text>
+<text xml:space="preserve" text-anchor="middle" x="79.2" y="-31" font-family="Arial" font-size="10.00">192.168.200.242</text>
+<text xml:space="preserve" text-anchor="middle" x="79.2" y="-19" font-family="Arial" font-size="10.00">Nginx + PHP-FPM</text>
+<text xml:space="preserve" text-anchor="middle" x="79.2" y="-7" font-family="Arial" font-size="10.00">WordPress</text>
+</g>
+<!-- balancer&#45;&gt;frontend1 -->
+<g id="edge2" class="edge">
+<title>balancer-&gt;frontend1</title>
+<path fill="none" stroke="#0066cc" stroke-dasharray="5,2" d="M131.14,-295C96.73,-295 65.6,-295 65.6,-295 65.6,-295 65.6,-67.83 65.6,-67.83"/>
+<polygon fill="#0066cc" stroke="#0066cc" points="69.1,-67.83 65.6,-57.83 62.1,-67.83 69.1,-67.83"/>
+<text xml:space="preserve" text-anchor="middle" x="54.66" y="-168" font-family="Arial" font-size="8.00">round-robin</text>
+<text xml:space="preserve" text-anchor="middle" x="54.66" y="-158.4" font-family="Arial" font-size="8.00">hash</text>
+</g>
+<!-- frontend2 -->
+<g id="node3" class="node">
+<title>frontend2</title>
+<path fill="#b0e0e6" stroke="black" d="M406.4,-56C406.4,-56 272,-56 272,-56 266,-56 260,-50 260,-44 260,-44 260,-12 260,-12 260,-6 266,0 272,0 272,0 406.4,0 406.4,0 412.4,0 418.4,-6 418.4,-12 418.4,-12 418.4,-44 418.4,-44 418.4,-50 412.4,-56 406.4,-56"/>
+<text xml:space="preserve" text-anchor="middle" x="339.2" y="-43" font-family="Arial" font-size="10.00">frontend-2</text>
+<text xml:space="preserve" text-anchor="middle" x="339.2" y="-31" font-family="Arial" font-size="10.00">192.168.200.36</text>
+<text xml:space="preserve" text-anchor="middle" x="339.2" y="-19" font-family="Arial" font-size="10.00">Nginx + PHP-FPM</text>
+<text xml:space="preserve" text-anchor="middle" x="339.2" y="-7" font-family="Arial" font-size="10.00">WordPress</text>
+</g>
+<!-- balancer&#45;&gt;frontend2 -->
+<g id="edge3" class="edge">
+<title>balancer-&gt;frontend2</title>
+<path fill="none" stroke="#0066cc" stroke-dasharray="5,2" d="M301.3,-266.32C301.3,-266.32 301.3,-67.9 301.3,-67.9"/>
+<polygon fill="#0066cc" stroke="#0066cc" points="304.8,-67.9 301.3,-57.9 297.8,-67.9 304.8,-67.9"/>
+<text xml:space="preserve" text-anchor="middle" x="427.66" y="-168" font-family="Arial" font-size="8.00">round-robin</text>
+<text xml:space="preserve" text-anchor="middle" x="427.66" y="-158.4" font-family="Arial" font-size="8.00">hash</text>
+</g>
+<!-- db -->
+<g id="node4" class="node">
+<title>db</title>
+<polygon fill="#dda0dd" stroke="black" points="291.4,-193.6 288.4,-197.6 267.4,-197.6 264.4,-193.6 133,-193.6 133,-137.6 291.4,-137.6 291.4,-193.6"/>
+<text xml:space="preserve" text-anchor="middle" x="212.2" y="-180.6" font-family="Arial" font-size="10.00">db</text>
+<text xml:space="preserve" text-anchor="middle" x="212.2" y="-168.6" font-family="Arial" font-size="10.00">192.168.200.67</text>
+<text xml:space="preserve" text-anchor="middle" x="212.2" y="-156.6" font-family="Arial" font-size="10.00">MariaDB</text>
+<text xml:space="preserve" text-anchor="middle" x="212.2" y="-144.6" font-family="Arial" font-size="10.00">wordpress DB</text>
+</g>
+<!-- frontend1&#45;&gt;db -->
+<g id="edge4" class="edge">
+<title>frontend1-&gt;db</title>
+<path fill="none" stroke="#ff6600" stroke-dasharray="1,5" d="M145.7,-56.18C145.7,-56.18 145.7,-125.95 145.7,-125.95"/>
+<polygon fill="#ff6600" stroke="#ff6600" points="142.2,-125.95 145.7,-135.95 149.2,-125.95 142.2,-125.95"/>
+<text xml:space="preserve" text-anchor="middle" x="178.66" y="-94.4" font-family="Arial" font-size="8.00">MySQL :3306</text>
+</g>
+<!-- frontend2&#45;&gt;db -->
+<g id="edge5" class="edge">
+<title>frontend2-&gt;db</title>
+<path fill="none" stroke="#ff6600" stroke-dasharray="1,5" d="M275.7,-56.18C275.7,-56.18 275.7,-125.95 275.7,-125.95"/>
+<polygon fill="#ff6600" stroke="#ff6600" points="272.2,-125.95 275.7,-135.95 279.2,-125.95 272.2,-125.95"/>
+<text xml:space="preserve" text-anchor="middle" x="321.66" y="-94.4" font-family="Arial" font-size="8.00">MySQL :3306</text>
+</g>
+<!-- user -->
+<g id="node5" class="node">
+<title>user</title>
+<ellipse fill="#90ee90" stroke="black" cx="221.2" cy="-441.23" rx="58.46" ry="22.63"/>
+<text xml:space="preserve" text-anchor="middle" x="221.2" y="-444.23" font-family="Arial" font-size="10.00">Пользователь</text>
+<text xml:space="preserve" text-anchor="middle" x="221.2" y="-432.23" font-family="Arial" font-size="10.00">(браузер)</text>
+</g>
+<!-- user&#45;&gt;balancer -->
+<g id="edge1" class="edge">
+<title>user-&gt;balancer</title>
+<path fill="none" stroke="#cc0000" stroke-width="2" d="M221.2,-418.32C221.2,-418.32 221.2,-335.9 221.2,-335.9"/>
+<polygon fill="#cc0000" stroke="#cc0000" stroke-width="2" points="224.7,-335.9 221.2,-325.9 217.7,-335.9 224.7,-335.9"/>
+<text xml:space="preserve" text-anchor="middle" x="238.32" y="-375.4" font-family="Arial" font-size="8.00">HTTP :80</text>
+</g>
+</g>
+</svg>

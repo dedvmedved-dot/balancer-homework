@@ -1,0 +1,13 @@
+ase@DESKTOP-9N5QTVO:~/balancer-project$ terraform apply -auto-approve
+...
+Apply complete! Resources: 13 added, 0 changed, 0 destroyed.
+
+Outputs:
+
+vm_names = [
+  "balancer",
+  "frontend-1",
+  "frontend-2",
+  "db",
+]
+ase@DESKTOP-9N5QTVO:~/balancer-project$

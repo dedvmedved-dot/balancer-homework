@@ -1,0 +1,11 @@
+ase@DESKTOP-9N5QTVO:~/balancer-project$ for i in 1 2 3 4 5 6; do
+  echo -n "Запрос $i: "
+  curl -sI http://192.168.200.41/roundrobin 2>/dev/null | grep X-Backend-Server
+done
+Запрос 1: X-Backend-Server: frontend-2
+Запрос 2: X-Backend-Server: frontend-1
+Запрос 3: X-Backend-Server: frontend-2
+Запрос 4: X-Backend-Server: frontend-1
+Запрос 5: X-Backend-Server: frontend-2
+Запрос 6: X-Backend-Server: frontend-1
+ase@DESKTOP-9N5QTVO:~/balancer-project$

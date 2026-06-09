@@ -1,0 +1,12 @@
+ase@DESKTOP-9N5QTVO:~/balancer-project$ curl -I http://192.168.200.242
+HTTP/1.1 302 Found
+Server: nginx/1.18.0 (Ubuntu)
+X-Redirect-By: WordPress
+Location: http://192.168.200.242/wp-admin/install.php
+
+ase@DESKTOP-9N5QTVO:~/balancer-project$ curl -I http://192.168.200.36
+HTTP/1.1 302 Found
+Server: nginx/1.18.0 (Ubuntu)
+X-Redirect-By: WordPress
+Location: http://192.168.200.36/wp-admin/install.php
+ase@DESKTOP-9N5QTVO:~/balancer-project$

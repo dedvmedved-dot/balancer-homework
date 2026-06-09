@@ -1,0 +1,8 @@
+ase@DESKTOP-9N5QTVO:~/balancer-project/ansible$ ansible-playbook -i inventory.yml playbook.yml
+...
+PLAY RECAP ****************************************************************************
+balancer   : ok=8    changed=6    unreachable=0    failed=0    skipped=0
+db         : ok=9    changed=6    unreachable=0    failed=0    skipped=0
+frontend-1 : ok=11   changed=9    unreachable=0    failed=0    skipped=0
+frontend-2 : ok=11   changed=9    unreachable=0    failed=0    skipped=0
+ase@DESKTOP-9N5QTVO:~/balancer-project/ansible$

@@ -1,0 +1,24 @@
+ase@DESKTOP-9N5QTVO:~/balancer-project$ ssh ubuntu@192.168.200.41 "cat /etc/nginx/sites-enabled/balancer"
+upstream backend_roundrobin {
+    server 192.168.200.242;
+    server 192.168.200.36;
+}
+upstream backend_hash {
+    hash $request_uri consistent;
+    server 192.168.200.242;
+    server 192.168.200.36;
+}
+server {
+    listen 80;
+    location /roundrobin {
+        proxy_pass http://backend_roundrobin;
+        proxy_set_header Host $host;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+    location /hash {
+        proxy_pass http://backend_hash;
+        proxy_set_header Host $host;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+}
+ase@DESKTOP-9N5QTVO:~/balancer-project$

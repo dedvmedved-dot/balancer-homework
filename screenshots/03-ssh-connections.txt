@@ -1,0 +1,13 @@
+ase@DESKTOP-9N5QTVO:~/balancer-project$ for ip in 192.168.200.41 192.168.200.242 192.168.200.36 192.168.200.67; do
+  echo "=== $ip ==="
+  ssh ubuntu@$ip "hostname"
+done
+=== 192.168.200.41 ===
+balancer
+=== 192.168.200.242 ===
+frontend-1
+=== 192.168.200.36 ===
+frontend-2
+=== 192.168.200.67 ===
+db
+ase@DESKTOP-9N5QTVO:~/balancer-project$

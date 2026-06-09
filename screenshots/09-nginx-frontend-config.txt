@@ -1,0 +1,16 @@
+ase@DESKTOP-9N5QTVO:~/balancer-project$ ssh ubuntu@192.168.200.242 "cat /etc/nginx/sites-enabled/wordpress"
+server {
+    listen 80;
+    root /var/www/wordpress;
+    index index.php index.html;
+    server_name _;
+    add_header X-Backend-Server $hostname;
+    location / {
+        try_files $uri $uri/ /index.php?$args;
+    }
+    location ~ \.php$ {
+        include snippets/fastcgi-php.conf;
+        fastcgi_pass unix:/var/run/php/php8.1-fpm.sock;
+    }
+}
+ase@DESKTOP-9N5QTVO:~/balancer-project$
