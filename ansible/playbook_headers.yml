@@ -1,0 +1,15 @@
+---
+- name: Добавить заголовок с сервером
+  hosts: frontends
+  become: yes
+  tasks:
+    - name: Добавить X-Backend-Server в конфиг
+      lineinfile:
+        path: /etc/nginx/sites-available/wordpress
+        insertafter: 'server_name _;'
+        line: '    add_header X-Backend-Server $hostname;'
+
+    - name: Перезапустить Nginx
+      systemd:
+        name: nginx
+        state: restarted

@@ -1,0 +1,189 @@
+---
+# ============ ОБЩИЕ НАСТРОЙКИ ============
+- name: Общие настройки всех ВМ
+  hosts: all
+  become: yes
+  tasks:
+    - name: Обновить кэш apt
+      apt:
+        update_cache: yes
+
+# ============ БАЛАНСИРОВЩИК ============
+- name: Настройка Nginx Balancer
+  hosts: balancer
+  become: yes
+  tasks:
+    - name: Установить Nginx
+      apt:
+        name: nginx
+        state: present
+
+    - name: Копировать конфиг балансировщика (round-robin)
+      copy:
+        dest: /etc/nginx/sites-available/balancer
+        content: |
+          upstream backend_roundrobin {
+              server 192.168.200.242;
+              server 192.168.200.36;
+          }
+          upstream backend_hash {
+              hash $request_uri consistent;
+              server 192.168.200.242;
+              server 192.168.200.36;
+          }
+          server {
+              listen 80;
+              location /roundrobin {
+                  proxy_pass http://backend_roundrobin;
+                  proxy_set_header Host $host;
+                  proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+              }
+              location /hash {
+                  proxy_pass http://backend_hash;
+                  proxy_set_header Host $host;
+                  proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+              }
+          }
+
+    - name: Активировать конфиг
+      file:
+        src: /etc/nginx/sites-available/balancer
+        dest: /etc/nginx/sites-enabled/balancer
+        state: link
+
+    - name: Удалить default
+      file:
+        path: /etc/nginx/sites-enabled/default
+        state: absent
+
+    - name: Перезапустить Nginx
+      systemd:
+        name: nginx
+        state: restarted
+        enabled: yes
+
+# ============ БАЗА ДАННЫХ ============
+- name: Настройка MariaDB
+  hosts: database
+  become: yes
+  tasks:
+    - name: Установить MariaDB
+      apt:
+        name:
+          - mariadb-server
+          - python3-pymysql
+        state: present
+
+    - name: Запустить MariaDB
+      systemd:
+        name: mariadb
+        state: started
+        enabled: yes
+
+    - name: Создать БД WordPress
+      mysql_db:
+        name: wordpress
+        state: present
+        login_unix_socket: /var/run/mysqld/mysqld.sock
+
+    - name: Создать пользователя WordPress
+      mysql_user:
+        name: wpuser
+        password: wppassword
+        priv: "wordpress.*:ALL"
+        host: "%"
+        state: present
+        login_unix_socket: /var/run/mysqld/mysqld.sock
+
+    - name: Разрешить удалённые подключения
+      lineinfile:
+        path: /etc/mysql/mariadb.conf.d/50-server.cnf
+        regexp: '^bind-address'
+        line: 'bind-address = 0.0.0.0'
+
+    - name: Перезапустить MariaDB
+      systemd:
+        name: mariadb
+        state: restarted
+
+# ============ ФРОНТЕНДЫ ============
+- name: Настройка Frontend серверов
+  hosts: frontends
+  become: yes
+  tasks:
+    - name: Установить Nginx и PHP-FPM
+      apt:
+        name:
+          - nginx
+          - php-fpm
+          - php-mysql
+          - php-curl
+          - php-gd
+          - php-mbstring
+          - php-xml
+          - php-zip
+        state: present
+
+    - name: Скачать WordPress
+      unarchive:
+        src: https://wordpress.org/latest.tar.gz
+        dest: /var/www/
+        remote_src: yes
+
+    - name: Установить права на WordPress
+      file:
+        path: /var/www/wordpress
+        owner: www-data
+        group: www-data
+        recurse: yes
+
+    - name: Копировать wp-config.php
+      copy:
+        dest: /var/www/wordpress/wp-config.php
+        content: |
+          <?php
+          define('DB_NAME', 'wordpress');
+          define('DB_USER', 'wpuser');
+          define('DB_PASSWORD', 'wppassword');
+          define('DB_HOST', '192.168.200.67');
+          define('DB_CHARSET', 'utf8');
+          define('DB_COLLATE', '');
+          $table_prefix = 'wp_';
+          define('WP_DEBUG', false);
+          if (!defined('ABSPATH'))
+              define('ABSPATH', dirname(__FILE__) . '/');
+          require_once(ABSPATH . 'wp-settings.php');
+
+    - name: Копировать конфиг Nginx
+      copy:
+        dest: /etc/nginx/sites-available/wordpress
+        content: |
+          server {
+              listen 80;
+              root /var/www/wordpress;
+              index index.php index.html;
+              server_name _;
+              location / {
+                  try_files $uri $uri/ /index.php?$args;
+              }
+              location ~ \.php$ {
+                  include snippets/fastcgi-php.conf;
+                  fastcgi_pass unix:/var/run/php/php8.1-fpm.sock;
+              }
+          }
+
+    - name: Активировать конфиг
+      file:
+        src: /etc/nginx/sites-available/wordpress
+        dest: /etc/nginx/sites-enabled/wordpress
+        state: link
+
+    - name: Удалить default
+      file:
+        path: /etc/nginx/sites-enabled/default
+        state: absent
+
+    - name: Перезапустить Nginx и PHP-FPM
+      shell: |
+        systemctl restart nginx
+        systemctl restart php8.1-fpm
